@@ -18,12 +18,13 @@ pip install -r requirements.txt
 $ python bars.py # possibly requires call of python3 executive instead of just python
 Biggest bars: Спорт бар «Красная машина»
 Smallest bars: БАР. СОКИ, Соки, Фреш-бар, Бар в Деловом центре Яуза
-Enter your gps coordinates:
-Closest bars: Бар - пиццерия
+Enter your gps coordinates:37.9025 55.4103
+Closest bars: Бар «Водопад»
 
 ```
 
 Запуск на Windows происходит аналогично.
+В поле для ввода координат сначала вводится долгота, а затем через пробел – широта.
 
 # Цели проекта
 
