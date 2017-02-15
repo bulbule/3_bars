@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 ```#!bash
 
-$ python bars.py data-2897-2016-11-23.json
+$ python bars.py data-2897-2016-11-23.json  # possibly requires call of python3 executive instead of just python
 Biggest bars: Спорт бар «Красная машина»
 Smallest bars: БАР. СОКИ, Соки, Фреш-бар, Бар в Деловом центре Яуза
 Enter your longitude and latitude separated by a space:37.4 55.2
