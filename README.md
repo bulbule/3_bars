@@ -18,8 +18,8 @@ pip install -r requirements.txt
 $ python bars.py # possibly requires call of python3 executive instead of just python
 Biggest bars: Спорт бар «Красная машина»
 Smallest bars: БАР. СОКИ, Соки, Фреш-бар, Бар в Деловом центре Яуза
-Enter your gps coordinates:37.9025 55.4103
-Closest bars: Бар «Водопад»
+Enter your longitude and latitude separated by a space:37.63 55.75
+Closest bars: Боттел Бар
 
 ```
 
