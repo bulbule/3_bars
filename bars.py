@@ -1,5 +1,6 @@
 
 import json
+import sys
 import os.path
 from geopy.distance import great_circle
 from geopy.geocoders import Nominatim
@@ -14,69 +15,52 @@ def load_data(filepath):
         return json.loads(data_file.read())
 
 
-def get_biggest_bar(bars_data):
+def get_biggest_bar(bars):
     """ Returns the list of names of the bars
     with the largest number of seats """
 
-    seats = []
-    biggest_bars = []
+    seats = max(bar["SeatsCount"] for bar in bars)
+    biggest_bars = [bar['Name']
+                    for bar in bars if bar['SeatsCount'] == seats]
 
-    for element in bars_data:
-        seats.append(element['SeatsCount'])
-
-    # indexes of the bars in data with the largest number of seats
-    biggest_bars_indexes = [index for index, max_value in enumerate(seats)
-                            if max_value == max(seats)]
-    for bar in biggest_bars_indexes:
-        biggest_bars.append(bars_data[bar]['Name'])
-
-    return(biggest_bars)
+    return biggest_bars
 
 
-def get_smallest_bar(bars_data):
+def get_smallest_bar(bars):
     """ Returns the list of names of the bars
     with the smallest number of seats
     """
 
-    seats = []
-    smallest_bars = []
+    seats = min(bar["SeatsCount"] for bar in bars)
+    smallest_bars = [bar['Name']
+                     for bar in bars if bar['SeatsCount'] == seats]
 
-    for element in bars_data:
-        seats.append(element['SeatsCount'])
-
-    # indexes of the bars in data with the largest number of seats
-    smallest_bars_indexes = [index for index, min_value in enumerate(seats)
-                             if min_value == min(seats)]
-    for bar in smallest_bars_indexes:
-        smallest_bars.append(bars_data[bar]['Name'])
-
-    return(smallest_bars)
+    return smallest_bars
 
 
-def get_closest_bar(bars_data, longitude, latitude):
+def get_closest_bar(bars, longitude, latitude):
     """ Returns the list of names of the closest bars """
 
     my_coordinates = (longitude, latitude)
-    distances = []
-    closest_bars = []
 
-    for element in bars_data:
-        bar_coordinates = tuple(element['geoData']['coordinates'])
-        distances.append(great_circle(my_coordinates, bar_coordinates).miles)
+    distances = [
+        great_circle(
+            my_coordinates,
+            (element['geoData']['coordinates'])).miles for element in bars]
 
     closest_bars_indexes = [index for index, min_dist in enumerate(distances)
                             if min_dist == min(distances)]
-    for index in closest_bars_indexes:
-        closest_bars.append(bars_data[index]['Name'])
 
-    return(closest_bars)
+    closest_bars = [bars[index]['Name'] for index in closest_bars_indexes]
+
+    return closest_bars
 
 
 if __name__ == '__main__':
 
-    bars_data = load_data('data-2897-2016-11-23.json')
-    print("Biggest bars:", ";".join(map(str, get_biggest_bar(bars_data))))
-    print("Smallest bars:", ", ".join(map(str, get_smallest_bar(bars_data))))
+    bars = load_data(sys.argv[1])
+    print("Biggest bars:", ";".join(map(str, get_biggest_bar(bars))))
+    print("Smallest bars:", ", ".join(map(str, get_smallest_bar(bars))))
     geolocator = Nominatim()
 
     try:
@@ -90,5 +74,5 @@ if __name__ == '__main__':
             raise IndexError("You failed to enter exactly two numbers.")
         else:
             print("Closest bars:", ", ".join(
-                map(str, get_closest_bar(bars_data,
+                map(str, get_closest_bar(bars,
                                          location[0], location[1]))))
