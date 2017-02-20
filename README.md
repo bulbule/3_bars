@@ -11,9 +11,7 @@
 который устанавливается с помощью команды в терминале
 
 ``` #!bash
-
 pip install -r requirements.txt
-
 ```
 
 Запуск на Linux:
@@ -25,7 +23,6 @@ Biggest bars: Спорт бар «Красная машина»
 Smallest bars: БАР. СОКИ, Соки, Фреш-бар, Бар в Деловом центре Яуза
 Enter your longitude and latitude separated by a space:37.4 55.2
 Closest bars: Торнадо
-
 
 ```
 
