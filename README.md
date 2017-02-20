@@ -11,7 +11,7 @@
 который устанавливается с помощью команды в терминале
 
 ``` #!bash
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 Запуск на Linux:
