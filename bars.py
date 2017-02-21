@@ -16,30 +16,24 @@ def load_data(filepath):
 
 
 def get_biggest_bar(bars):
-    """ Returns the list of names of the bars
-    with the largest number of seats """
 
-    seats = max(bar["SeatsCount"] for bar in bars)
-    biggest_bars = [bar['Name']
-                    for bar in bars if bar['SeatsCount'] == seats]
+    max_seats_bar = max(bars, key=lambda bar: bar['SeatsCount'])
+    biggest_bars = [bar for bar in bars if bar[
+        'SeatsCount'] == max_seats_bar['SeatsCount']]
 
     return biggest_bars
 
 
 def get_smallest_bar(bars):
-    """ Returns the list of names of the bars
-    with the smallest number of seats
-    """
 
-    seats = min(bar["SeatsCount"] for bar in bars)
-    smallest_bars = [bar['Name']
-                     for bar in bars if bar['SeatsCount'] == seats]
+    min_seats_bar = min(bars, key=lambda bar: bar['SeatsCount'])
+    smallest_bars = [bar for bar in bars if bar[
+        'SeatsCount'] == min_seats_bar['SeatsCount']]
 
     return smallest_bars
 
 
 def get_closest_bar(bars, longitude, latitude):
-    """ Returns the list of names of the closest bars """
 
     my_coordinates = (longitude, latitude)
 
@@ -51,7 +45,7 @@ def get_closest_bar(bars, longitude, latitude):
     closest_bars_indexes = [index for index, min_dist in enumerate(distances)
                             if min_dist == min(distances)]
 
-    closest_bars = [bars[index]['Name'] for index in closest_bars_indexes]
+    closest_bars = [bars[index] for index in closest_bars_indexes]
 
     return closest_bars
 
@@ -59,8 +53,10 @@ def get_closest_bar(bars, longitude, latitude):
 if __name__ == '__main__':
 
     bars = load_data(sys.argv[1])
-    print("Biggest bars:", ";".join(map(str, get_biggest_bar(bars))))
-    print("Smallest bars:", ", ".join(map(str, get_smallest_bar(bars))))
+    print("Biggest bars:", *[bar['Name']
+                             for bar in get_biggest_bar(bars)], sep='\n')
+    print("Smallest bars:", *[bar['Name']
+                              for bar in get_smallest_bar(bars)], sep='\n')
     geolocator = Nominatim()
 
     try:
@@ -73,6 +69,8 @@ if __name__ == '__main__':
         if len(location) != 2:
             raise IndexError("You failed to enter exactly two numbers.")
         else:
-            print("Closest bars:", ", ".join(
-                map(str, get_closest_bar(bars,
-                                         location[0], location[1]))))
+            print("Closest bars:",
+                  *[bar['Name'] for bar in get_closest_bar(bars,
+                                                           location[0],
+                                                           location[1])],
+                  sep='\n')
