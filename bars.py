@@ -15,7 +15,7 @@ def load_data(filepath):
         return json.loads(data_file.read())
 
 
-def get_biggest_bar(bars):
+def get_biggest_bars(bars):
 
     max_seats_bar = max(bars, key=lambda bar: bar['SeatsCount'])
     biggest_bars = [bar for bar in bars if bar[
@@ -24,7 +24,7 @@ def get_biggest_bar(bars):
     return biggest_bars
 
 
-def get_smallest_bar(bars):
+def get_smallest_bars(bars):
 
     min_seats_bar = min(bars, key=lambda bar: bar['SeatsCount'])
     smallest_bars = [bar for bar in bars if bar[
@@ -33,7 +33,7 @@ def get_smallest_bar(bars):
     return smallest_bars
 
 
-def get_closest_bar(bars, longitude, latitude):
+def get_closest_bars(bars, longitude, latitude):
 
     my_coordinates = (longitude, latitude)
 
@@ -41,11 +41,13 @@ def get_closest_bar(bars, longitude, latitude):
         great_circle(
             my_coordinates,
             (element['geoData']['coordinates'])).miles for element in bars]
+        
+    min_distance = min(distances)
 
-    closest_bars_indexes = [index for index, min_dist in enumerate(distances)
-                            if min_dist == min(distances)]
+    closest_bars = [bars[index] for index, dist in enumerate(distances)
+                            if dist == min_distance]
 
-    closest_bars = [bars[index] for index in closest_bars_indexes]
+    #closest_bars = [bars[index] for index in closest_bars_indexes]
 
     return closest_bars
 
@@ -54,9 +56,9 @@ if __name__ == '__main__':
 
     bars = load_data(sys.argv[1])
     print("Biggest bars:", *[bar['Name']
-                             for bar in get_biggest_bar(bars)], sep='\n')
+                             for bar in get_biggest_bars(bars)], sep='\n')
     print("Smallest bars:", *[bar['Name']
-                              for bar in get_smallest_bar(bars)], sep='\n')
+                              for bar in get_smallest_bars(bars)], sep='\n')
     geolocator = Nominatim()
 
     try:
@@ -70,7 +72,7 @@ if __name__ == '__main__':
             raise IndexError("You failed to enter exactly two numbers.")
         else:
             print("Closest bars:",
-                  *[bar['Name'] for bar in get_closest_bar(bars,
+                  *[bar['Name'] for bar in get_closest_bars(bars,
                                                            location[0],
                                                            location[1])],
                   sep='\n')
