@@ -47,8 +47,6 @@ def get_closest_bars(bars, longitude, latitude):
     closest_bars = [bars[index] for index, dist in enumerate(distances)
                             if dist == min_distance]
 
-    #closest_bars = [bars[index] for index in closest_bars_indexes]
-
     return closest_bars
 
 
